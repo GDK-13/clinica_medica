@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+  <h1>Pacientes Cadastrados</h1>
+  <%= link_to "Novo Paciente", new_paciente_path, class: "btn btn-primary" %>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Data de Nascimento</th>
+        <th colspan="3" class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pacientes.each do |paciente| %>
+        <tr>
+          <td><%= paciente.nome %></td>
+          <td><%= paciente.cpf %></td>
+          <td><%= paciente.data_nascimento&.strftime("%d/%m/%Y") %></td>
+          <td class="text-center"><%= link_to "Ver", paciente, class: "btn btn-sm btn-info text-white" %></td>
+          <td class="text-center"><%= link_to "Editar", edit_paciente_path(paciente), class: "btn btn-sm btn-warning" %></td>
+          <td class="text-center">
+            <%= button_to "Excluir", paciente, method: :delete, form: { data: { turbo_confirm: 'Tem certeza que deseja excluir este paciente?' } }, class: "btn btn-sm btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

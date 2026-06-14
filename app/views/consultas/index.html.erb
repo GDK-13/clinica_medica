@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+  <h1>Consultas Agendadas</h1>
+  <div class="btn-group">
+    <%= link_to "Nova Consulta", new_consulta_path, class: "btn btn-primary" %>
+    <%= link_to "Exportar CSV", consultas_path(format: :csv), class: "btn btn-success" %>
+    <%= link_to "Exportar PDF", consultas_path(format: :pdf), target: "_blank", class: "btn btn-danger" %>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Data e Hora</th>
+        <th colspan="3" class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @consultas.each do |consulta| %>
+        <tr>
+          <td><%= consulta.id %></td>
+          <td><%= consulta.paciente&.nome || 'Não informado' %></td>
+          <td><%= consulta.medico&.nome || 'Não informado' %></td>
+          <td><%= consulta.data_hora&.strftime("%d/%m/%Y %H:%M") || 'Não informada' %></td>
+          <td class="text-center"><%= link_to "Ver", consulta, class: "btn btn-sm btn-info text-white" %></td>
+          <td class="text-center"><%= link_to "Editar", edit_consulta_path(consulta), class: "btn btn-sm btn-warning" %></td>
+          <td class="text-center">
+            <%= button_to "Excluir", consulta, method: :delete, form: { data: { turbo_confirm: 'Tem certeza que deseja excluir esta consulta?' } }, class: "btn btn-sm btn-danger" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @consultas %>
+</div>
