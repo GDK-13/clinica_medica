@@ -3,23 +3,23 @@ class ConsultasController < ApplicationController
 
   # GET /consultas or /consultas.json
   def index
-    # 1. KAMINARI (0,5 pontos): Paginação com 5 registros por página.
-    # O .includes(:medico, :paciente) otimiza a busca no banco de dados.
+    # kaminari , paginação com 5 registros por página.
+    # includes(:medico, :paciente) otimizar a busca no banco de dados
     @consultas = Consulta.includes(:medico, :paciente).page(params[:page]).per(5)
 
     respond_to do |format|
-      format.html # Renderiza a tela normal do Rails
+      format.html
 
-      # 2. GERAR CSV (1,0 ponto): Exigência de pelo menos 3 campos
+      # geração do csv
       format.csv do
         require 'csv'
         csv_data = CSV.generate(headers: true) do |csv|
-          # Cabeçalho com 4 campos
+          # cabeçalho com 4 campos
           csv << ['ID', 'Paciente', 'Medico', 'Data e Hora'] 
           
-          # Usamos Consulta.all para garantir que o CSV baixe todas as consultas, não só as da página 1
+          # consulta.all garantindo que todas as consultas sejam listadas
           Consulta.all.each do |c|
-            # Proteção caso alguma consulta esteja sem paciente ou médico associado
+            # proteção caso alguma consulta esteja sem paciente ou médico
             nome_paciente = c.paciente ? c.paciente.nome : 'Não informado'
             nome_medico = c.medico ? c.medico.nome : 'Não informado'
             data_formatada = c.data_hora ? c.data_hora.strftime("%d/%m/%Y %H:%M") : 'Não informada'
@@ -30,13 +30,13 @@ class ConsultasController < ApplicationController
         send_data csv_data, filename: "relatorio_consultas-#{Date.today}.csv"
       end
 
-      # 3. GERAR PDF COM PRAWN (0,5 pontos)
+      # praw para gerar pdf
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "Listagem de Consultas da Clínica", size: 18, style: :bold, align: :center
         pdf.move_down 20
         
-        # Estruturando os dados para a tabela do PDF
+        # estruturando os dados para a tabela do PDF
         table_data = [["ID", "Paciente", "Médico", "Data/Hora"]]
         
         Consulta.all.each do |c|
@@ -47,10 +47,10 @@ class ConsultasController < ApplicationController
           table_data << [c.id.to_s, nome_paciente, nome_medico, data_formatada]
         end
 
-        # Desenhando a tabela no PDF (ajustando a largura para 100% e colorindo linhas alternadas)
+        # desenhando a tabela no PDF ajustando a largura para 100% e colorindo linhas alternadas 
         pdf.table(table_data, header: true, width: pdf.bounds.width, row_colors: ["F2F2F2", "FFFFFF"])
         
-        # disposition: 'inline' faz o PDF abrir no navegador em vez de baixar direto
+        #disposition: 'inline' para o pdf abrir direto no navegador
         send_data pdf.render, filename: 'consultas.pdf', type: 'application/pdf', disposition: 'inline'
       end
     end

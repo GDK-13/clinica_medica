@@ -1,2 +1,50 @@
+$primary: #52c48a;   // Botão primário
+$secondary: #71C3B1; // Botão secundário
+$success: #8FC2D8;   // Botão de sucesso
+$info: #80AFD3;      // Botão de informação
+$warning: #719CCE;   // Botão   de aviso
+$danger: #d7857f;    // Botão de perigo
+$dark: #52c48a;      // Barra de navegação e cabeçalho da tabela
+
+$body-bg: #f0faf4;   // Fundo da página
+$body-color: #030905;// Texto
+$font-family-base: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; // Fonte
+
+$border-radius: 0.5rem; // Bordas
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+/* Barra de navegação */
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Container da tabela */
+.table-responsive {
+  background-color: #ffffff;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-top: 10px;
+  border: 1px solid #e9ecef;
+}
+
+/* Linha da tabela */
+.table-hover tbody tr:hover td {
+  background-color: rgba($primary, 0.05);
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Alerta */
+.alert {
+  border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+/* Título */
+h1 {
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: -0.5px;
+}    

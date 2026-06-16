@@ -12,8 +12,7 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <%# O Rails agora vai usar o Bootstrap instalado localmente através destas tags: %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
   <body>
@@ -35,7 +34,7 @@
           <ul class="navbar-nav">
             <% if user_signed_in? %>
               <li class="nav-item">
-                <%= button_to "Sair do Sistema", destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm mt-1" %>
+                <%= button_to "Sair do Sistema", destroy_user_session_path, method: :delete, class: "btn btn-warning btn-sm mt-1" %>
               </li>
             <% end %>
           </ul>
