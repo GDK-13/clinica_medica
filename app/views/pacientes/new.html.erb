@@ -1,11 +1,8 @@
-<% content_for :title, "New paciente" %>
-
-<h1>New paciente</h1>
-
-<%= render "form", paciente: @paciente %>
-
-<br>
-
-<div>
-  <%= link_to "Back to pacientes", pacientes_path %>
+<div class="card shadow-sm mb-4 mt-3">
+  <div class="card-header bg-dark text-white">
+    <h2 class="h5 mb-0">Cadastrar Novo Registro</h2>
+  </div>
+  <div class="card-body">
+    <%= render "form", paciente: @paciente %>
+  </div>
 </div>

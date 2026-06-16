@@ -1,37 +1,32 @@
-<%= form_with(model: consulta) do |form| %>
+<%= form_with(model: consulta, local: true) do |form| %>
   <% if consulta.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(consulta.errors.count, "error") %> prohibited this consulta from being saved:</h2>
-
-      <ul>
-        <% consulta.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h5 class="h6"><%= pluralize(consulta.errors.count, "erro") %> impediram a gravação:</h5>
+      <ul class="mb-0 small">
+        <% consulta.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :medico_id, style: "display: block" %>
-    <%= form.text_field :medico_id %>
+  <div class="mb-3">
+    <%= form.label :paciente_id, "Paciente", class: "form-label fw-bold" %>
+    <%= form.collection_select :paciente_id, Paciente.all, :id, :nome, { prompt: "Selecione o paciente" }, { class: "form-select" } %>
   </div>
-
-  <div>
-    <%= form.label :paciente_id, style: "display: block" %>
-    <%= form.text_field :paciente_id %>
+  <div class="mb-3">
+    <%= form.label :medico_id, "Médico", class: "form-label fw-bold" %>
+    <%= form.collection_select :medico_id, Medico.all, :id, :nome, { prompt: "Selecione o médico" }, { class: "form-select" } %>
   </div>
-
-  <div>
-    <%= form.label :data_hora, style: "display: block" %>
-    <%= form.datetime_field :data_hora %>
+  <div class="mb-3">
+    <%= form.label :data_hora, "Data e Hora", class: "form-label fw-bold" %>
+    <%= form.datetime_field :data_hora, class: "form-control" %>
   </div>
-
-  <div>
-    <%= form.label :observacoes, style: "display: block" %>
-    <%= form.textarea :observacoes %>
+  <div class="mb-3">
+    <%= form.label :observacoes, "Observações", class: "form-label fw-bold" %>
+    <%= form.text_area :observacoes, class: "form-control", rows: 3, placeholder: "Histórico clínico ou notas da triagem..." %>
   </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="d-flex gap-2 mt-4">
+    <%= form.submit "Salvar Registro", class: "btn btn-success" %>
+    <%= link_to "Cancelar", consultas_path, class: "btn btn-secondary" %>
   </div>
 <% end %>

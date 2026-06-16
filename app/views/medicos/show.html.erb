@@ -1,10 +1,17 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @medico %>
-
-<div>
-  <%= link_to "Edit this medico", edit_medico_path(@medico) %> |
-  <%= link_to "Back to medicos", medicos_path %>
-
-  <%= button_to "Destroy this medico", @medico, method: :delete %>
+<div class="card shadow-sm mb-4 mt-3">
+  <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+    <h2 class="h5 mb-0">Dados do Médico</h2>
+    <%= link_to "Voltar", medicos_path, class: "btn btn-sm btn-outline-light" %>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Nome:</strong> <%= @medico.nome %></li>
+      <li class="list-group-item"><strong>CRM:</strong> <%= @medico.crm %></li>
+      <li class="list-group-item"><strong>Especialidade:</strong> <%= @medico.especialidade %></li>
+    </ul>
+  </div>
+  <div class="card-footer bg-light d-flex justify-content-end gap-2">
+    <%= link_to "Editar", edit_medico_path(@medico), class: "btn btn-warning" %>
+    <%= button_to "Excluir", @medico, method: :delete, form: { data: { turbo_confirm: 'Confirma a exclusão deste registro?' } }, class: "btn btn-danger" %>
+  </div>
 </div>

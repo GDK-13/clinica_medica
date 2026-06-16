@@ -6,6 +6,13 @@
     <%= link_to "Exportar PDF", consultas_path(format: :pdf), target: "_blank", class: "btn btn-danger" %>
   </div>
 </div>
+<%= form_with url: consultas_path, method: :get, class: "d-flex mb-3 shadow-sm", local: true do |form| %>
+  <%= form.text_field :busca, value: params[:busca], class: "form-control me-2", placeholder: "Buscar pelo nome do médico ou paciente..." %>
+  <%= form.submit "Buscar", class: "btn btn-primary" %>
+  <% if params[:busca].present? %>
+    <%= link_to "Limpar", consultas_path, class: "btn btn-outline-secondary ms-2" %>
+  <% end %>
+<% end %>
 <div class="table-responsive">
   <table class="table table-striped table-hover table-bordered align-middle">
     <thead class="table-dark">

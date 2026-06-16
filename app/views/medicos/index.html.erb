@@ -2,6 +2,13 @@
   <h1>Médicos Cadastrados</h1>
   <%= link_to "Novo Médico", new_medico_path, class: "btn btn-primary" %>
 </div>
+<%= form_with url: medicos_path, method: :get, class: "d-flex mb-3 shadow-sm", local: true do |form| %>
+  <%= form.text_field :busca, value: params[:busca], class: "form-control me-2", placeholder: "Buscar por nome, CRM ou especialidade..." %>
+  <%= form.submit "Buscar", class: "btn btn-primary" %>
+  <% if params[:busca].present? %>
+    <%= link_to "Limpar", medicos_path, class: "btn btn-outline-secondary ms-2" %>
+  <% end %>
+<% end %>
 <div class="table-responsive">
   <table class="table table-striped table-hover table-bordered align-middle">
     <thead class="table-dark">

@@ -3,7 +3,12 @@ class PacientesController < ApplicationController
 
   # GET /pacientes or /pacientes.json
   def index
-    @pacientes = Paciente.all
+    if params[:busca].present?
+      # busca por trechos do nome ou do cpf
+      @pacientes = Paciente.where("nome LIKE ? OR cpf LIKE ?", "%#{params[:busca]}%", "%#{params[:busca]}%").page(params[:page]).per(5)
+    else
+      @pacientes = Paciente.page(params[:page]).per(5)
+    end
   end
 
   # GET /pacientes/1 or /pacientes/1.json

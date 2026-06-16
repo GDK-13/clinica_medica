@@ -1,11 +1,8 @@
-<% content_for :title, "New consulta" %>
-
-<h1>New consulta</h1>
-
-<%= render "form", consulta: @consulta %>
-
-<br>
-
-<div>
-  <%= link_to "Back to consultas", consultas_path %>
+<div class="card shadow-sm mb-4 mt-3">
+  <div class="card-header bg-dark text-white">
+    <h2 class="h5 mb-0">Agendar Nova Consulta</h2>
+  </div>
+  <div class="card-body">
+    <%= render "form", consulta: @consulta %>
+  </div>
 </div>

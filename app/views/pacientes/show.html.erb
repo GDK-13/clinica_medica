@@ -1,10 +1,17 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @paciente %>
-
-<div>
-  <%= link_to "Edit this paciente", edit_paciente_path(@paciente) %> |
-  <%= link_to "Back to pacientes", pacientes_path %>
-
-  <%= button_to "Destroy this paciente", @paciente, method: :delete %>
+<div class="card shadow-sm mb-4 mt-3">
+  <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+    <h2 class="h5 mb-0">Dados do Paciente</h2>
+    <%= link_to "Voltar", pacientes_path, class: "btn btn-sm btn-outline-light" %>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Nome:</strong> <%= @paciente.nome %></li>
+      <li class="list-group-item"><strong>CPF:</strong> <%= @paciente.cpf %></li>
+      <li class="list-group-item"><strong>Data de Nascimento:</strong> <%= @paciente.data_nascimento&.strftime("%d/%m/%Y") %></li>
+    </ul>
+  </div>
+  <div class="card-footer bg-light d-flex justify-content-end gap-2">
+    <%= link_to "Editar", edit_paciente_path(@paciente), class: "btn btn-warning" %>
+    <%= button_to "Excluir", @paciente, method: :delete, form: { data: { turbo_confirm: 'Confirma a exclusão deste registro?' } }, class: "btn btn-danger" %>
+  </div>
 </div>

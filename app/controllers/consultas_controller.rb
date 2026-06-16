@@ -3,21 +3,30 @@ class ConsultasController < ApplicationController
 
   # GET /consultas or /consultas.json
   def index
-    # kaminari , paginação com 5 registros por página.
-    # includes(:medico, :paciente) otimizar a busca no banco de dados
-    @consultas = Consulta.includes(:medico, :paciente).page(params[:page]).per(5)
+    # 1. Prepara a consulta base otimizada para evitar o problema de N+1 queries
+    @consultas = Consulta.includes(:medico, :paciente)
+
+    # 2. Se o usuário digitou algo na barra, filtra os dados
+    if params[:busca].present?
+      # Faz um INNER JOIN com medicos e pacientes para procurar pelos nomes
+      @consultas = @consultas.joins(:medico, :paciente)
+                             .where("medicos.nome LIKE ? OR pacientes.nome LIKE ?", "%#{params[:busca]}%", "%#{params[:busca]}%")
+    end
+
+    # 3. Aplica a paginação do Kaminari (REQUISITO A) ao resultado da busca
+    @consultas = @consultas.page(params[:page]).per(5)
 
     respond_to do |format|
       format.html
 
-      # geração do csv
+      # geração do csv (REQUISITO G)
       format.csv do
         require 'csv'
         csv_data = CSV.generate(headers: true) do |csv|
           # cabeçalho com 4 campos
           csv << ['ID', 'Paciente', 'Medico', 'Data e Hora'] 
           
-          # consulta.all garantindo que todas as consultas sejam listadas
+          # consulta.all garantindo que todas as consultas sejam listadas no arquivo
           Consulta.all.each do |c|
             # proteção caso alguma consulta esteja sem paciente ou médico
             nome_paciente = c.paciente ? c.paciente.nome : 'Não informado'
@@ -30,7 +39,7 @@ class ConsultasController < ApplicationController
         send_data csv_data, filename: "relatorio_consultas-#{Date.today}.csv"
       end
 
-      # praw para gerar pdf
+      # prawn para gerar pdf (REQUISITO D)
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "Listagem de Consultas da Clínica", size: 18, style: :bold, align: :center
@@ -50,7 +59,7 @@ class ConsultasController < ApplicationController
         # desenhando a tabela no PDF ajustando a largura para 100% e colorindo linhas alternadas 
         pdf.table(table_data, header: true, width: pdf.bounds.width, row_colors: ["F2F2F2", "FFFFFF"])
         
-        #disposition: 'inline' para o pdf abrir direto no navegador
+        # disposition: 'inline' para o pdf abrir direto no navegador
         send_data pdf.render, filename: 'consultas.pdf', type: 'application/pdf', disposition: 'inline'
       end
     end

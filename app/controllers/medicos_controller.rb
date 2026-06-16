@@ -3,7 +3,12 @@ class MedicosController < ApplicationController
 
   # GET /medicos or /medicos.json
   def index
-    @medicos = Medico.all
+    if params[:busca].present?
+      # busca por nome crm ou especialidade
+      @medicos = Medico.where("nome LIKE ? OR crm LIKE ? OR especialidade LIKE ?", "%#{params[:busca]}%", "%#{params[:busca]}%", "%#{params[:busca]}%").page(params[:page]).per(5)
+    else
+      @medicos = Medico.page(params[:page]).per(5)
+    end
   end
 
   # GET /medicos/1 or /medicos/1.json

@@ -1,32 +1,28 @@
-<%= form_with(model: paciente) do |form| %>
+<%= form_with(model: paciente, local: true) do |form| %>
   <% if paciente.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(paciente.errors.count, "error") %> prohibited this paciente from being saved:</h2>
-
-      <ul>
-        <% paciente.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h5 class="h6"><%= pluralize(paciente.errors.count, "erro") %> impediram a gravação:</h5>
+      <ul class="mb-0 small">
+        <% paciente.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :nome, style: "display: block" %>
-    <%= form.text_field :nome %>
+  <div class="mb-3">
+    <%= form.label :nome, "Nome Completo", class: "form-label fw-bold" %>
+    <%= form.text_field :nome, class: "form-control", placeholder: "Digite o nome completo" %>
   </div>
-
-  <div>
-    <%= form.label :cpf, style: "display: block" %>
-    <%= form.text_field :cpf %>
+  <div class="mb-3">
+    <%= form.label :cpf, "CPF", class: "form-label fw-bold" %>
+    <%= form.text_field :cpf, class: "form-control", placeholder: "000.000.000-00" %>
   </div>
-
-  <div>
-    <%= form.label :data_nascimento, style: "display: block" %>
-    <%= form.date_field :data_nascimento %>
+  <div class="mb-3">
+    <%= form.label :data_nascimento, "Data de Nascimento", class: "form-label fw-bold" %>
+    <%= form.date_field :data_nascimento, class: "form-control" %>
   </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="d-flex gap-2 mt-4">
+    <%= form.submit "Salvar Registro", class: "btn btn-success" %>
+    <%= link_to "Cancelar", pacientes_path, class: "btn btn-secondary" %>
   </div>
 <% end %>

@@ -1,12 +1,8 @@
-<% content_for :title, "Editing medico" %>
-
-<h1>Editing medico</h1>
-
-<%= render "form", medico: @medico %>
-
-<br>
-
-<div>
-  <%= link_to "Show this medico", @medico %> |
-  <%= link_to "Back to medicos", medicos_path %>
+<div class="card shadow-sm mb-4 mt-3">
+  <div class="card-header bg-dark text-white">
+    <h2 class="h5 mb-0">Modificar Médico Existente</h2>
+  </div>
+  <div class="card-body">
+    <%= render "form", medico: @medico %>
+  </div>
 </div>
