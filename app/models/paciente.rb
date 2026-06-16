@@ -1,5 +1,5 @@
 class Paciente < ApplicationRecord
-  # Associações entre os modelos, indicando que o paciente pode ter muitas consultas e muitos médicos através das consultas
+  # associações entre os modelos, indicando que o paciente pode ter muitas consultas e muitos médicos através das consultas
   has_many :consultas, dependent: :destroy
   has_many :medicos, through: :consultas
 

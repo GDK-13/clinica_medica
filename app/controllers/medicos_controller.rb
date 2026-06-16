@@ -23,7 +23,7 @@ class MedicosController < ApplicationController
   # GET /medicos/1/edit
   def edit
   end
-
+  
   # POST /medicos or /medicos.json
   def create
     @medico = Medico.new(medico_params)
