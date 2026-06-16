@@ -2,6 +2,13 @@
   <h1>Pacientes Cadastrados</h1>
   <%= link_to "Novo Paciente", new_paciente_path, class: "btn btn-primary" %>
 </div>
+<%= form_with url: pacientes_path, method: :get, class: "d-flex mb-4 shadow-sm", local: true do |form| %>
+  <%= form.text_field :busca, value: params[:busca], class: "form-control me-2", placeholder: "Buscar por nome ou CPF..." %>
+  <%= form.submit "Buscar", class: "btn btn-primary" %>
+  <% if params[:busca].present? %>
+    <%= link_to "Limpar", pacientes_path, class: "btn btn-outline-secondary ms-2" %>
+  <% end %>
+<% end %>
 <div class="table-responsive">
   <table class="table table-striped table-hover table-bordered align-middle">
     <thead class="table-dark">
@@ -27,4 +34,7 @@
       <% end %>
     </tbody>
   </table>
+</div>
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @pacientes %>
 </div>
