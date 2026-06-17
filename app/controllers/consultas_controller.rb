@@ -3,23 +3,23 @@ class ConsultasController < ApplicationController
 
   # GET /consultas or /consultas.json
   def index
-    # 1. Prepara a consulta base otimizada para evitar o problema de N+1 queries
+    # prepara a consulta base otimizada para evitar o problema  N+1 queries
     @consultas = Consulta.includes(:medico, :paciente)
 
-    # 2. Se o usuário digitou algo na barra, filtra os dados
+    # filtra os dados de acordo com o que ta na barra de pesqisa
     if params[:busca].present?
-      # Faz um INNER JOIN com medicos e pacientes para procurar pelos nomes
+      # faz um INNER JOIN com medicos e pacientes para procurar pelos nomes
       @consultas = @consultas.joins(:medico, :paciente)
                              .where("medicos.nome LIKE ? OR pacientes.nome LIKE ?", "%#{params[:busca]}%", "%#{params[:busca]}%")
     end
 
-    # 3. Aplica a paginação do Kaminari (REQUISITO A) ao resultado da busca
+    # aplica a paginação do kaminari no resultado da busca
     @consultas = @consultas.page(params[:page]).per(5)
 
     respond_to do |format|
       format.html
 
-      # geração do csv (REQUISITO G)
+      # geração do csv
       format.csv do
         require 'csv'
         csv_data = CSV.generate(headers: true) do |csv|
@@ -39,13 +39,13 @@ class ConsultasController < ApplicationController
         send_data csv_data, filename: "relatorio_consultas-#{Date.today}.csv"
       end
 
-      # prawn para gerar pdf (REQUISITO D)
+      # prawn para gerar pdf
       format.pdf do
         pdf = Prawn::Document.new
         pdf.text "Listagem de Consultas da Clínica", size: 18, style: :bold, align: :center
         pdf.move_down 20
         
-        # estruturando os dados para a tabela do PDF
+        # estrutura dos dados para a tabela do PDF
         table_data = [["ID", "Paciente", "Médico", "Data/Hora"]]
         
         Consulta.all.each do |c|
